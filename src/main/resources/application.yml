@@ -1,0 +1,49 @@
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+  application:
+    name: gateway
+  config:
+    import: configserver:http://localhost:8888
+  cloud:
+    bus:
+      id: ${spring.application.name}:${spring.profiles.active}:${random.uuid}
+      enabled: true
+      refresh:
+        enabled: true
+      env:
+        enabled: true
+    config:
+      uri: http://${CONFIG_SERVER_HOST:localhost}:8888
+  data:
+    redis:
+      database: 0
+      host: localhost
+      port: 6379
+#    gateway:
+#      routes:
+#        - id: test
+#          uri: http://localhost:8080
+#          predicates:
+#            - Path=/v1/test/{duration}
+#          filters:
+#            - CircuitBreaker=myCircuitBreaker
+#            - SetPath=/test
+#            - AddRequestParameter=duration, {duration}
+#            - AddRequestParameter=msg, testParam
+#    gateway:
+#      routes:
+#        - id: test
+#          uri: http://localhost:8080
+#          predicates:
+#            - Path=/v1/test/{duration}
+#          filters:
+#            - SetPath=/test
+#            - AddRequestParameter=duration, {duration}
+#            - AddRequestParameter=msg, testParam
+#            - CircuitBreaker=TestCircuitBreaker
+server:
+  port: 8899
+logging:
+  level:
+    web: trace
